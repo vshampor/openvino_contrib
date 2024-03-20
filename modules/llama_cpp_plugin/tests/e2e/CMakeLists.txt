@@ -13,6 +13,7 @@ ov_add_test_target(
     openvino::funcSharedTests
     INCLUDES
     "${LlamaCppPlugin_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
     ADD_CLANG_FORMAT
     LABELS
     OV UNIT TEMPLATE
