@@ -1,6 +1,9 @@
 // Copyright (C) 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
+#ifndef MODEL_FIXTURE_HPP
+#define MODEL_FIXTURE_HPP
+
 #include <gtest/gtest.h>
 
 #include "common_test_utils/file_utils.hpp"
@@ -31,3 +34,5 @@ protected:
     }
     ov::CompiledModel model;
 };
+
+#endif /* MODEL_FIXTURE_HPP */
