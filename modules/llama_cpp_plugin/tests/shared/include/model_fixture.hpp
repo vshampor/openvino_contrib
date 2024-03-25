@@ -11,8 +11,16 @@ const std::string TEST_FILES_DIR = "test_data";
 const auto SEP = ov::util::FileTraits<char>::file_separator;
 
 class CompiledModelTest : public ::testing::Test {
+public:
+    static void fill_unused_inputs(ov::InferRequest& infer_request, const ov::Shape& input_ids_reference_shape) {
+        infer_request.set_tensor("attention_mask", ov::Tensor(ov::element::Type_t::i64, input_ids_reference_shape));
+
+        size_t batch_size = input_ids_reference_shape[0];
+        infer_request.set_tensor("beam_idx", ov::Tensor(ov::element::Type_t::i32, ov::Shape{batch_size}));
+    }
+
 protected:
-    CompiledModelTest() {
+    void SetUp() override {
         const std::string plugin_name = "LLAMA_CPP";
         ov::Core core;
 
@@ -20,13 +28,6 @@ protected:
         const std::string model_file =
             ov::test::utils::getCurrentWorkingDir() + SEP + TEST_FILES_DIR + SEP + model_file_name;
         model = core.compile_model(model_file, plugin_name);
-    }
-
-    void fill_unused_inputs(ov::InferRequest& infer_request, const ov::Shape& input_ids_reference_shape) {
-        infer_request.set_tensor("attention_mask", ov::Tensor(ov::element::Type_t::i64, input_ids_reference_shape));
-
-        size_t batch_size = input_ids_reference_shape[0];
-        infer_request.set_tensor("beam_idx", ov::Tensor(ov::element::Type_t::i32, ov::Shape{batch_size}));
     }
     ov::CompiledModel model;
 };
